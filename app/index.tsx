@@ -13,8 +13,8 @@ import { nicknameToEmail } from "../lib/auth";
 import {router} from "expo-router";
 
 export default function Login() {
-    const [nickname, setNickname] = useState("");
-    const [password, setPassword] = useState("");
+    const [nickname, setNickname] = useState("oguzhan1");
+    const [password, setPassword] = useState("123456789");
     const [loading, setLoading] = useState(false);
 
     async function signUp(){

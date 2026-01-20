@@ -1,9 +1,10 @@
-import {Text, View} from "react-native";
+import { useEffect } from "react";
+import { router } from "expo-router";
 
-export default function Home(){
-    return(
-        <View style={{flex: 1, justifyContent: "center", alignItems: "center"}}>
-            <Text>Stories List</Text>
-        </View>
-    )
+export default function Home() {
+    useEffect(() => {
+        router.replace("/stories");
+    }, []);
+
+    return null;
 }
