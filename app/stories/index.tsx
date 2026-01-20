@@ -1,16 +1,31 @@
 import { FlatList, Pressable, View, Image, Text } from "react-native";
 import { router } from "expo-router";
+import {useEffect, useState} from "react";
+import { supabase } from "../../lib/supabase";
 
-const DATA = [
-    { id: "1", title: "First Story", image: "https://picsum.photos/200" },
-    { id: "2", title: "Second Story", image: "https://picsum.photos/300" },
-    { id: "3", title: "Third Story", image: "https://picsum.photos/400" },
-];
+
+
 
 export default function StoriesList() {
+    const [stories, setStories] = useState<any[]>([]);
+    useEffect(() => {
+        loadStories();
+    }, []);
+
+    async function loadStories() {
+        const { data, error } = await supabase
+            .from("stories")
+            .select("*")
+            .order("created_at", { ascending: false });
+
+        if (!error && data) {
+            setStories(data);
+        }
+    }
+
     return (
         <FlatList
-            data={DATA}
+            data={stories}
             numColumns={2}
             keyExtractor={(item) => item.id}
             contentContainerStyle={{ padding: 12 }}
