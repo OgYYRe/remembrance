@@ -12,6 +12,8 @@ export default function StoriesList() {
         loadStories();
     }, []);
 
+    const IMAGE_BASE_URL =  "https://gmsznaqhtvvqfnuhfcye.supabase.co/storage/v1/object/public/images";
+
     async function loadStories() {
         const { data, error } = await supabase
             .from("stories")
@@ -42,7 +44,15 @@ export default function StoriesList() {
                             backgroundColor: "#eee",
                         }}
                     >
-                        <Image source={{ uri: item.image }} style={{ width: "100%", height: 140 }} />
+                        <Image
+                            source={
+                                item.image_path
+                                    ? { uri: `${IMAGE_BASE_URL}/${item.image_path}` }
+                                    : undefined
+                            }
+                            style={{ width: "100%", aspectRatio: 1 }}
+                            resizeMode="cover"
+                        />
                         <View style={{ padding: 8 }}>
                             <Text style={{ fontWeight: "600" }}>{item.title}</Text>
                         </View>
