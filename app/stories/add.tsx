@@ -303,14 +303,22 @@ export default function AddStoryScreen() {
                 />
 
 
-                {/* Cansel + Save Buttons*/ }
+                {/* Cansel + Save Buttons + HOME*/ }
                 <View style={styles.row}>
                     <Pressable
                         style={[styles.btn, styles.btnCancel]}
                         onPress={() => router.back()}
                         disabled={loading}
                     >
-                        <Text style={styles.btnText}>Cancel</Text>
+                        <Text style={styles.btnCancelText}>Cancel</Text>
+                    </Pressable>
+
+                    <Pressable
+                        style={[styles.btn, styles.btnHome]}
+                        onPress={() => router.replace("/home")}
+                        disabled={loading}
+                    >
+                        <Text style={styles.btnHomeText}>Home</Text>
                     </Pressable>
 
                     <Pressable
@@ -318,7 +326,7 @@ export default function AddStoryScreen() {
                         onPress={onSave}
                         disabled={loading}
                     >
-                        {loading ? <ActivityIndicator /> : <Text style={styles.btnText}>Save</Text>}
+                        {loading ? <ActivityIndicator /> : <Text style={styles.btnSaveText}>Save</Text>}
                     </Pressable>
                 </View>
 
@@ -351,8 +359,15 @@ const styles = StyleSheet.create({
     },
     btnSave: { backgroundColor: "#233fbf" },
     btnCancel: { backgroundColor: "#eee" },
+    btnHome: { backgroundColor: "#000000" },
     btnDisabled: { opacity: 0.7 },
-    btnText: { color: "#000", fontSize: 16, fontWeight: "600" },
+
+    btnSaveText: { color: "#fff", fontSize: 16, fontWeight: "600" },
+    btnCancelText: { color: "#000", fontSize: 16, fontWeight: "600" },
+    btnHomeText: { color: "#fff", fontSize: 16, fontWeight: "600" },
+
+
+
 
     imageBox: {
         width: "100%",

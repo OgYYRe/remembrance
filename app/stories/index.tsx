@@ -41,41 +41,55 @@ export default function StoriesList() {
     }
 
 
+
+
     return (
         <View style={{flex: 1}}>
+            <View style={{ paddingTop: 50, paddingHorizontal: 20, alignItems: "center"
+            }}>
+                <Text style={{ fontSize: 24, fontWeight: "600" }}>My Stories</Text>
+            </View>
             <FlatList
                 data={stories}
                 numColumns={2}
                 keyExtractor={(item) => item.id}
-                contentContainerStyle={{padding: 12}}
-                columnWrapperStyle={{gap: 12}}
-                renderItem={({item}) => (
-                    <Pressable
-                        style={{flex: 1}}
-                        onPress={() => router.push(`/stories/${item.id}`)}
-                    >
-                        <View
+                contentContainerStyle={{ padding: 12, paddingTop: 8 }}
+                columnWrapperStyle={{ gap: 12 }}
+                renderItem={({ item, index }) => {
+                    const isLastOdd = stories.length % 2 === 1 && index === stories.length - 1;
+
+                    return (
+                        <Pressable
+                            onPress={() => router.push(`/stories/${item.id}`)}
                             style={{
-                                borderRadius: 12,
-                                overflow: "hidden",
-                                backgroundColor: "#eee",
+                                flex: 1,
+                                maxWidth: "48%",
+                                alignSelf: isLastOdd ? "flex-start" : "auto",
                             }}
                         >
-                            <Image
-                                source={
-                                    item.image_path
-                                        ? {uri: `${IMAGE_BASE_URL}/${item.image_path}`}
-                                        : undefined
-                                }
-                                style={{width: "100%", aspectRatio: 1}}
-                                resizeMode="cover"
-                            />
-                            <View style={{padding: 8}}>
-                                <Text style={{fontWeight: "600"}}>{item.title}</Text>
+                            <View
+                                style={{
+                                    borderRadius: 12,
+                                    overflow: "hidden",
+                                    backgroundColor: "#eee",
+                                }}
+                            >
+                                <Image
+                                    source={
+                                        item.image_path
+                                            ? { uri: `${IMAGE_BASE_URL}/${item.image_path}` }
+                                            : undefined
+                                    }
+                                    style={{ width: "100%", aspectRatio: 1 }}
+                                    resizeMode="cover"
+                                />
+                                <View style={{ padding: 8 }}>
+                                    <Text style={{ fontWeight: "600" }}>{item.title}</Text>
+                                </View>
                             </View>
-                        </View>
-                    </Pressable>
-                )}
+                        </Pressable>
+                    );
+                }}
             />
 
             {/* Add Button */}
@@ -98,9 +112,10 @@ export default function StoriesList() {
             </Pressable>
 
 
+
             {/* Logout Button */}
             <Pressable
-                onPress={() => router.push("/")}
+                onPress={onLogout}
                 style={{
                     position: "absolute",
                     left: 16,
