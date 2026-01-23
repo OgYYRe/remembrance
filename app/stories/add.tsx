@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useRef, useState} from "react";
 import {
     View, Text, TextInput, Pressable,Image, StyleSheet, Alert, Keyboard, TouchableWithoutFeedback, ActivityIndicator,
 } from "react-native";
@@ -6,11 +6,30 @@ import { useRouter } from "expo-router";
 import { supabase } from "../../lib/supabase";
 
 import * as ImagePicker from "expo-image-picker";
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
+
+
+
+
 
 
 
 export default function AddStoryScreen() {
     const router = useRouter();
+
+    const scrollRef = useRef<KeyboardAwareScrollView>(null);
+
+    const titleRef = useRef<TextInput>(null);
+    const colorRef = useRef<TextInput>(null);
+    const sizeRef = useRef<TextInput>(null);
+    const locationRef = useRef<TextInput>(null);
+    const storyRef = useRef<TextInput>(null);
+
+    function scrollToInput(inputRef: React.RefObject<TextInput>) {
+        inputRef.current?.measure((x, y, w, h, px, py) => {
+            scrollRef.current?.scrollToPosition?.(0, Math.max(0, py - 120), true);
+        });
+    }
 
     const [title, setTitle] = useState("");
     const [text, setText] = useState("");
@@ -150,7 +169,14 @@ export default function AddStoryScreen() {
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <View style={styles.container}>
+            <KeyboardAwareScrollView
+                ref={scrollRef}
+                contentContainerStyle={styles.container}
+                enableOnAndroid
+                extraScrollHeight={120}
+                keyboardShouldPersistTaps="handled"
+            >
+
                 <Text style={styles.h1}>Add Story</Text>
 
                 <Pressable onPress={takePhoto} style={styles.imageBox}>
@@ -177,6 +203,8 @@ export default function AddStoryScreen() {
                     style={styles.input}
                     autoCapitalize="none"
                     maxLength={80}
+                    ref={titleRef}
+                    onFocus={() => scrollToInput(titleRef)}
                 />
 
                 {/* Add details */}
@@ -213,7 +241,15 @@ export default function AddStoryScreen() {
                                 <Text style={{ color: "#555", fontSize: 18 }}>−</Text>
                             </Pressable>
                         </View>
-                        <TextInput value={color} onChangeText={setColor} style={styles.input} placeholder="White" />
+                        <TextInput
+                            ref={colorRef}
+                            onFocus={() => scrollToInput(colorRef)}
+                            value={color}
+                            onChangeText={setColor}
+                            style={styles.input}
+                            placeholder="White"
+                        />
+
 
                     </>
                 )}
@@ -227,7 +263,7 @@ export default function AddStoryScreen() {
                                 <Text style={{ color: "#555", fontSize: 18 }}>−</Text>
                             </Pressable>
                         </View>
-                        <TextInput value={size} onChangeText={setSize} style={styles.input} placeholder="2 meter" />
+                        <TextInput ref={sizeRef} onFocus={() => scrollToInput(sizeRef)} value={size} onChangeText={setSize} style={styles.input} placeholder="2 meter" />
 
                     </>
                 )}
@@ -241,13 +277,22 @@ export default function AddStoryScreen() {
                                 <Text style={{ color: "#555", fontSize: 18 }}>−</Text>
                             </Pressable>
                         </View>
-                        <TextInput value={location} onChangeText={setLocation} style={styles.input} placeholder="Zurich" />
+                        <TextInput
+                            ref={locationRef}
+                            onFocus={() => scrollToInput(locationRef)}
+                            value={location}
+                            onChangeText={setLocation}
+                            style={styles.input}
+                            placeholder="Zurich"
+                        />
 
                     </>
                 )}
 
                 <Text style={styles.label}>Story</Text>
                 <TextInput
+                    ref={storyRef}
+                    onFocus={() => scrollToInput(storyRef)}
                     value={text}
                     onChangeText={setText}
                     placeholder="Tell me your story..."
@@ -256,6 +301,7 @@ export default function AddStoryScreen() {
                     textAlignVertical="top"
                     maxLength={2000}
                 />
+
 
                 {/* Cansel + Save Buttons*/ }
                 <View style={styles.row}>
@@ -276,15 +322,14 @@ export default function AddStoryScreen() {
                     </Pressable>
                 </View>
 
-
-            </View>
+            </KeyboardAwareScrollView>
         </TouchableWithoutFeedback>
     );
 
 }
 
 const styles = StyleSheet.create({
-    container: { flex: 1, padding: 16, backgroundColor: "white" },
+    container: { flexGrow: 1, padding: 16, backgroundColor: "white" },
     h1: { fontSize: 24, fontWeight: "600", marginBottom: 16 },
     label: { fontSize: 14, marginTop: 12, marginBottom: 6 },
     input: {

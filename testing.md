@@ -2,8 +2,8 @@
 
 ## 0. Bekannte Probleme (noch nicht gelöst)
 
-- Keyboard überdeckt Textfelder auf Add Story Screen
-- Cancel und Save Buttons sind nicht sichtbar, wenn viele optionale Felder aktiv sind
+✔ Keyboard überdeckt Textfelder auf Add Story Screen
+✔ Cancel und Save Buttons sind nicht sichtbar, wenn viele optionale Felder aktiv sind
 - Allgemeine Styling Verbesserungen nötig
 
 ---
@@ -118,7 +118,7 @@
 3. Gleich für Size und Location  
    **Erwartet:** Felder erscheinen und verschwinden korrekt.  
    **Result:** PASS   
-   **Notiz:** Layout Probleme mit Keyboard beachten.
+   **Notiz:** ✔ Layout Probleme mit Keyboard beachten.
 
 ---
 
@@ -155,4 +155,4 @@
 4. Save drücken  
    **Erwartet:** Änderungen werden gespeichert und angezeigt.  
    **Result:** PASS  
-   **Notiz:** Keyboard steht über dem Story-input
+   **Notiz:** ✔ Keyboard steht über dem Story-input
