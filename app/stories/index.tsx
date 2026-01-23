@@ -35,6 +35,12 @@ export default function StoriesList() {
         }
     }
 
+    async function onLogout() {
+        await supabase.auth.signOut();
+        router.replace("/");
+    }
+
+
     return (
         <View style={{flex: 1}}>
             <FlatList
@@ -90,6 +96,27 @@ export default function StoriesList() {
                 <Text style={{ color: "white", fontSize: 26, lineHeight: 20 }}>+</Text>
                 <Text style={{ color: "white", fontSize: 14, fontWeight: "600" }}>NEW</Text>
             </Pressable>
+
+
+            {/* Logout Button */}
+            <Pressable
+                onPress={() => router.push("/")}
+                style={{
+                    position: "absolute",
+                    left: 16,
+                    bottom: 75,
+                    width: 56,
+                    height: 56,
+                    borderRadius: 28,
+                    backgroundColor: "#cc0000",
+                    alignItems: "center",
+                    justifyContent: "center",
+                }}
+            >
+                <Text style={{ color: "white", fontSize: 26, lineHeight: 20 }}>← </Text>
+                <Text style={{ color: "white", fontSize: 14, fontWeight: "600" }}>Log out</Text>
+            </Pressable>
+
         </View>
     );
 }
