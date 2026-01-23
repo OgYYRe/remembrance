@@ -10,16 +10,18 @@ import {
 } from "react-native";
 import { supabase } from "../lib/supabase";
 import { nicknameToEmail } from "../lib/auth";
+import { validatePassword } from "../lib/password";
 import {router} from "expo-router";
 
 export default function Login() {
-    const [nickname, setNickname] = useState("oguzhan1");
-    const [password, setPassword] = useState("123456789");
+    const [nickname, setNickname] = useState("ogyyre");
+    const [password, setPassword] = useState("Ab12345.");
     const [loading, setLoading] = useState(false);
 
     async function signUp(){
         try{
             setLoading(true);
+            validatePassword(password);
             const email = nicknameToEmail(nickname);
             const {error} = await supabase.auth.signUp({email, password});
             if(error) throw error;

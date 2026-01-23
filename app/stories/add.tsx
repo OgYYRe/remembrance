@@ -86,7 +86,7 @@ export default function AddStoryScreen() {
             const imagePath = `${userId}/${storyId}.jpg`;
 
 
-            // 2) Upload photo to Storage (robust)
+            // 2) Upload photo to Storage
             if (!photoBase64) throw new Error("Photo data missing.");
 
             const bytes = Uint8Array.from(atob(photoBase64), (c) => c.charCodeAt(0));
