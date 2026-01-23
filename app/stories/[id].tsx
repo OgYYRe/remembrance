@@ -58,26 +58,21 @@ export default function StoryDetail() {
                     setDeleting(true);
                     try {
                         // 0) Debug
-                        Alert.alert("DEBUG image_path", String(story.image_path));
 
                         // 1) Storage delete FIRST
                         if (story.image_path) {
-                            const { data: removed, error: removeErr } = await supabase.storage
+                            const {  error: removeErr } = await supabase.storage
                                 .from("images")
                                 .remove([story.image_path]);
 
                             if (removeErr) throw removeErr;
-
-                            // Debug result
-                            Alert.alert("Storage delete result", JSON.stringify(removed));
-                        } else {
-                            Alert.alert("Storage delete skipped", "image_path is empty/null");
                         }
 
                         // 2) DB row delete AFTER
                         const { error: delErr } = await supabase.from("stories").delete().eq("id", story.id);
                         if (delErr) throw delErr;
 
+                        Alert.alert("OK", "Story deleted.");
                         router.replace("/stories");
                     } catch (e: any) {
                         Alert.alert("Error", e?.message ?? "Delete failed.");
