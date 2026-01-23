@@ -128,8 +128,8 @@
 **Schritte:**
 1. Story in der Stories List antippen  
    **Erwartet:** Detail Seite wird geöffnet.  
-   **Result:** PASS / FAIL  
-   **Notiz:** noch nicht implementiert.
+   **Result:** PASS   
+   **Notiz:** 
 
 ---
 
@@ -140,8 +140,8 @@
 1. Story Detail öffnen
 2. Delete Button drücken  
    **Erwartet:** Story wird gelöscht und ist nicht mehr in der Liste.  
-   **Result:** PASS / FAIL  
-   **Notiz:** noch nicht implementiert.
+   **Result:** PASS  
+   **Notiz:** 
 
 ---
 
@@ -151,8 +151,8 @@
 **Schritte:**
 1. Story Detail öffnen
 2. Edit Button drücken
-3. Title oder Text ändern
+3. Title oder Text ändern + auch Bild ändern
 4. Save drücken  
    **Erwartet:** Änderungen werden gespeichert und angezeigt.  
-   **Result:** PASS / FAIL  
-   **Notiz:** noch nicht implementiert.
+   **Result:** PASS  
+   **Notiz:** Keyboard steht über dem Story-input
