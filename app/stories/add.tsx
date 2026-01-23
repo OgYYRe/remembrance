@@ -1,9 +1,13 @@
 import React, { useState } from "react";
 import {
-    View, Text, TextInput, Pressable, StyleSheet, Alert, Keyboard, TouchableWithoutFeedback, ActivityIndicator,
+    View, Text, TextInput, Pressable,Image, StyleSheet, Alert, Keyboard, TouchableWithoutFeedback, ActivityIndicator,
 } from "react-native";
 import { useRouter } from "expo-router";
 import { supabase } from "../../lib/supabase";
+
+import * as ImagePicker from "expo-image-picker";
+
+
 
 export default function AddStoryScreen() {
     const router = useRouter();
@@ -12,17 +16,38 @@ export default function AddStoryScreen() {
     const [text, setText] = useState("");
     const [loading, setLoading] = useState(false);
 
+    // Detail fields visibility
     const [showColor, setShowColor] = useState(false);
     const [showSize, setShowSize] = useState(false);
     const [showLocation, setShowLocation] = useState(false);
+
+    // Photo  state
+    const [photoUri, setPhotoUri] = useState<string | null>(null);
+
+
+    // Detail fields values for submission
+    const [color, setColor] = useState("");
+    const [size, setSize] = useState("");
+    const [location, setLocation] = useState("");
+
+    const [photoBase64, setPhotoBase64] = useState<string | null>(null);
+
+
 
 
 
     const onSave = async () => {
         const cleanTitle = title.trim();
+        let storyId: string | null = null;
 
         if (cleanTitle.length === 0) {
-            Alert.alert("Error", "Title darf nicht leer sein.");
+            Alert.alert("Error", "Please enter a title. It is required.");
+            return;
+        }
+
+
+        if (!photoUri || !photoBase64) {
+            Alert.alert("Error", "Please take a photo.");
             return;
         }
 
@@ -31,44 +56,124 @@ export default function AddStoryScreen() {
             const { data: userRes, error: userErr } = await supabase.auth.getUser();
             if (userErr) throw userErr;
 
-            if (!userRes.user) {
-                Alert.alert("Error", "Bitte erneut einloggen.");
+            const user = userRes.user;
+            if (!user) {
+                Alert.alert("Error", "You must be logged in to add a story.");
                 router.replace("/");
                 return;
             }
 
-            const { error } = await supabase.from("stories").insert({
-                title: cleanTitle,
-                text: text.trim().length > 0 ? text.trim() : null,
-                // user_id default auth.uid() -> Supabase tarafinda set
-                // image_path sonra eklenecek
-            });
+            const userId = user.id;
 
-            if (error) throw error;
+            // 1) Insert story and get new story id
+            const { data: inserted, error: insertErr } = await supabase
+                .from("stories")
+                .insert({
+                    user_id: userId,
+                    title: cleanTitle,
+                    text: text.trim().length > 0 ? text.trim() : null,
+                    color: color.trim().length > 0 ? color.trim() : null,
+                    size: size.trim().length > 0 ? size.trim() : null,
+                    location: location.trim().length > 0 ? location.trim() : null,
+                })
+                .select("id")
+                .single();
+
+            if (insertErr) throw insertErr;
+            if (!inserted?.id) throw new Error("Story could not be created.");
+
+            storyId = inserted.id as string;
+            const imagePath = `${userId}/${storyId}.jpg`;
+
+
+            // 2) Upload photo to Storage (robust)
+            if (!photoBase64) throw new Error("Photo data missing.");
+
+            const bytes = Uint8Array.from(atob(photoBase64), (c) => c.charCodeAt(0));
+            const arrayBuffer = bytes.buffer;
+
+
+            const { error: uploadErr } = await supabase.storage
+                .from("images")
+                .upload(imagePath, arrayBuffer, {
+                    contentType: "image/jpeg",
+                    upsert: true,
+                });
+
+            if (uploadErr) throw uploadErr;
+
+
+            // 3) Update story with image_path
+            const { error: updateErr } = await supabase
+                .from("stories")
+                .update({ image_path: imagePath })
+                .eq("id", storyId);
+
+            if (updateErr) throw updateErr;
 
             router.replace("/stories");
         } catch (e: any) {
-            Alert.alert("Error", e?.message ?? "Speichern fehlgeschlagen.");
+
+            // Rollback: delete story if created
+            if (storyId) {
+                await supabase.from("stories").delete().eq("id", storyId);
+            }
+            Alert.alert("Error", e?.message ?? "Something went wrong. Please try again.");
         } finally {
             setLoading(false);
         }
     };
+
+
+    async function takePhoto() {
+        const { status } = await ImagePicker.requestCameraPermissionsAsync();
+        if (status !== "granted") {
+            Alert.alert("Error", "Camera permission is required to take a photo.");
+            return;
+        }
+
+        const result = await ImagePicker.launchCameraAsync({
+            quality: 0.8,
+            allowsEditing: true,
+            aspect: [1, 1],
+            base64: true,
+        });
+
+
+        if (!result.canceled) {
+            setPhotoUri(result.assets[0].uri);
+            setPhotoBase64(result.assets[0].base64 ?? null);
+        }
+
+    }
+
 
     return (
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
             <View style={styles.container}>
                 <Text style={styles.h1}>Add Story</Text>
 
-                <View style={styles.imageBox}>
-                    <Text style={styles.imageIcon}>📷</Text>
-                    <Text style={styles.imageText}>Take a photo</Text>
-                </View>
+                <Pressable onPress={takePhoto} style={styles.imageBox}>
+                    {photoUri ? (
+                        <Image
+                            source={{ uri: photoUri }}
+                            style={{ width: "100%", height: "100%" }}
+                            resizeMode="cover"
+                        />
+                    ) : (
+                        <>
+                            <Text style={styles.imageIcon}>📷</Text>
+                            <Text style={styles.imageText}>Take a photo</Text>
+                        </>
+                    )}
+                </Pressable>
+
 
                 <Text style={styles.label}>Title*</Text>
                 <TextInput
                     value={title}
                     onChangeText={setTitle}
-                    placeholder="z.B. Tree"
+                    placeholder="for exp: Tree"
                     style={styles.input}
                     autoCapitalize="none"
                     maxLength={80}
@@ -108,7 +213,8 @@ export default function AddStoryScreen() {
                                 <Text style={{ color: "#555", fontSize: 18 }}>−</Text>
                             </Pressable>
                         </View>
-                        <TextInput style={styles.input} placeholder="White" />
+                        <TextInput value={color} onChangeText={setColor} style={styles.input} placeholder="White" />
+
                     </>
                 )}
 
@@ -121,7 +227,8 @@ export default function AddStoryScreen() {
                                 <Text style={{ color: "#555", fontSize: 18 }}>−</Text>
                             </Pressable>
                         </View>
-                        <TextInput style={styles.input} placeholder="2 meter" />
+                        <TextInput value={size} onChangeText={setSize} style={styles.input} placeholder="2 meter" />
+
                     </>
                 )}
 
@@ -134,21 +241,23 @@ export default function AddStoryScreen() {
                                 <Text style={{ color: "#555", fontSize: 18 }}>−</Text>
                             </Pressable>
                         </View>
-                        <TextInput style={styles.input} placeholder="Zurich" />
+                        <TextInput value={location} onChangeText={setLocation} style={styles.input} placeholder="Zurich" />
+
                     </>
                 )}
 
-                <Text style={styles.label}>Text</Text>
+                <Text style={styles.label}>Story</Text>
                 <TextInput
                     value={text}
                     onChangeText={setText}
-                    placeholder="Kurzer Text..."
+                    placeholder="Tell me your story..."
                     style={[styles.input, styles.textArea]}
                     multiline
                     textAlignVertical="top"
                     maxLength={2000}
                 />
 
+                {/* Cansel + Save Buttons*/ }
                 <View style={styles.row}>
                     <Pressable
                         style={[styles.btn, styles.btnCancel]}
@@ -166,6 +275,8 @@ export default function AddStoryScreen() {
                         {loading ? <ActivityIndicator /> : <Text style={styles.btnText}>Save</Text>}
                     </Pressable>
                 </View>
+
+
             </View>
         </TouchableWithoutFeedback>
     );
@@ -199,13 +310,16 @@ const styles = StyleSheet.create({
     btnText: { color: "#000", fontSize: 16, fontWeight: "600" },
 
     imageBox: {
-        height: 200,
+        width: "100%",
+        aspectRatio: 1,
         borderRadius: 12,
         backgroundColor: "#e0e0e0",
+        overflow: "hidden",
         alignItems: "center",
         justifyContent: "center",
         marginBottom: 16,
     },
+
     imageIcon: {
         fontSize: 64,
     },

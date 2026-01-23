@@ -9,8 +9,18 @@ import { supabase } from "../../lib/supabase";
 export default function StoriesList() {
     const [stories, setStories] = useState<any[]>([]);
     useEffect(() => {
-        loadStories();
+        const sub = supabase.auth.onAuthStateChange(() => {
+            loadStories();
+        });
+
+        const interval = setInterval(loadStories, 2000);
+
+        return () => {
+            sub.data.subscription.unsubscribe();
+            clearInterval(interval);
+        };
     }, []);
+
 
     const IMAGE_BASE_URL = "https://gmsznaqhtvvqfnuhfcye.supabase.co/storage/v1/object/public/images";
 
