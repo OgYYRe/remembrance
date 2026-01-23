@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import {
     View,
     Text,
@@ -10,12 +10,12 @@ import {
     Keyboard,
     TouchableWithoutFeedback,
     ActivityIndicator,
-    ScrollView,
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { supabase } from "../../../lib/supabase";
 import * as ImagePicker from "expo-image-picker";
 import { Buffer } from "buffer";
+import {KeyboardAwareScrollView} from "react-native-keyboard-aware-scroll-view";
 
 
 const IMAGE_BASE_URL =
@@ -71,6 +71,22 @@ export default function EditStoryScreen() {
         if (story?.image_path) return `${IMAGE_BASE_URL}/${story.image_path}`;
         return null;
     }, [photoUri, story?.image_path]);
+
+    const scrollRef = useRef<KeyboardAwareScrollView>(null);
+
+    const titleRef = useRef<TextInput>(null);
+    const colorRef = useRef<TextInput>(null);
+    const sizeRef = useRef<TextInput>(null);
+    const locationRef = useRef<TextInput>(null);
+    const storyRef = useRef<TextInput>(null);
+
+    function scrollToInput(inputRef: React.RefObject<TextInput>) {
+        inputRef.current?.measure((x, y, w, h, px, py) => {
+            scrollRef.current?.scrollToPosition?.(0, Math.max(0, py - 120), true);
+        });
+    }
+
+
 
     async function loadStory() {
         if (!id) return;
@@ -221,8 +237,14 @@ export default function EditStoryScreen() {
     }
 
     return (
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-            <ScrollView contentContainerStyle={styles.container}>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+                <KeyboardAwareScrollView
+                    ref={scrollRef}
+                    contentContainerStyle={styles.container}
+                    enableOnAndroid
+                    extraScrollHeight={120}
+                    keyboardShouldPersistTaps="handled"
+                >
                 <Text style={styles.h1}>Edit Story</Text>
 
                 <Pressable onPress={takePhoto} style={styles.imageBox} disabled={saving}>
@@ -241,17 +263,20 @@ export default function EditStoryScreen() {
                 </Pressable>
 
                 <Text style={styles.label}>Title*</Text>
-                <TextInput
-                    value={title}
-                    onChangeText={setTitle}
-                    placeholder="for exp: Tree"
-                    style={styles.input}
-                    autoCapitalize="none"
-                    maxLength={80}
-                    editable={!saving}
-                />
+                    <TextInput
+                        ref={titleRef}
+                        onFocus={() => scrollToInput(titleRef)}
+                        value={title}
+                        onChangeText={setTitle}
+                        placeholder="for exp: Tree"
+                        style={styles.input}
+                        autoCapitalize="none"
+                        maxLength={80}
+                        editable={!saving}
+                    />
 
-                <View style={{ marginTop: 12 }}>
+
+                    <View style={{ marginTop: 12 }}>
                     <Text style={{ fontWeight: "600" }}>Details</Text>
 
                     <View style={{ flexDirection: "row", gap: 12, marginTop: 6 }}>
@@ -282,12 +307,15 @@ export default function EditStoryScreen() {
                             </Pressable>
                         </View>
                         <TextInput
+                            ref={colorRef}
+                            onFocus={() => scrollToInput(colorRef)}
                             value={color}
                             onChangeText={setColor}
                             style={styles.input}
                             placeholder="White"
                             editable={!saving}
                         />
+
                     </>
                 )}
 
@@ -300,12 +328,15 @@ export default function EditStoryScreen() {
                             </Pressable>
                         </View>
                         <TextInput
+                            ref={sizeRef}
+                            onFocus={() => scrollToInput(sizeRef)}
                             value={size}
                             onChangeText={setSize}
                             style={styles.input}
                             placeholder="2 meter"
                             editable={!saving}
                         />
+
                     </>
                 )}
 
@@ -318,28 +349,34 @@ export default function EditStoryScreen() {
                             </Pressable>
                         </View>
                         <TextInput
+                            ref={locationRef}
+                            onFocus={() => scrollToInput(locationRef)}
                             value={location}
                             onChangeText={setLocation}
                             style={styles.input}
                             placeholder="Zurich"
                             editable={!saving}
                         />
+
                     </>
                 )}
 
                 <Text style={styles.label}>Story</Text>
-                <TextInput
-                    value={text}
-                    onChangeText={setText}
-                    placeholder="Tell me your story..."
-                    style={[styles.input, styles.textArea]}
-                    multiline
-                    textAlignVertical="top"
-                    maxLength={2000}
-                    editable={!saving}
-                />
+                    <TextInput
+                        ref={storyRef}
+                        onFocus={() => scrollToInput(storyRef)}
+                        value={text}
+                        onChangeText={setText}
+                        placeholder="Tell me your story..."
+                        style={[styles.input, styles.textArea]}
+                        multiline
+                        textAlignVertical="top"
+                        maxLength={2000}
+                        editable={!saving}
+                    />
 
-                <View style={styles.row}>
+
+                    <View style={styles.row}>
                     <Pressable
                         style={[styles.btn, styles.btnCancel]}
                         onPress={() => router.back()}
@@ -356,8 +393,9 @@ export default function EditStoryScreen() {
                         {saving ? <ActivityIndicator /> : <Text style={styles.btnTextWhite}>Save</Text>}
                     </Pressable>
                 </View>
-            </ScrollView>
-        </TouchableWithoutFeedback>
+                </KeyboardAwareScrollView>
+            </TouchableWithoutFeedback>
+
     );
 }
 
