@@ -13,9 +13,11 @@
       "backgroundColor": "#ffffff"
     },
     "ios": {
+      "bundleIdentifier": "com.oguzhan.remembrance",
       "supportsTablet": true
     },
     "android": {
+      "package": "com.oguzhan.remembrance",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -27,6 +29,12 @@
     },
     "plugins": [
       "expo-router"
-    ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "0ba7de1e-9cae-431e-88d9-f2b86a164295"
+      }
+    }
   }
 }
