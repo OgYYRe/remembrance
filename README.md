@@ -180,9 +180,9 @@ Die Kamera-Funktion wurde wie geplant implementiert und produktiv eingesetzt.
 - Die Mockups dienten als Konzeptgrundlage und wurden funktional eingehalten.
 
 
-## Aufgabe 4: Mobile App – Mobile App publizieren
+# Aufgabe 4: Mobile App – Mobile App publizieren
 
-### Aufgabe 4a – Schritte zur Publikation der App
+## Aufgabe 4a – Schritte zur Publikation der App
 
 Die Mobile App wurde mit **React Native (Expo)** entwickelt und anschliessend mit **Expo Application Services (EAS)** für Android paketiert.
 
@@ -199,7 +199,7 @@ Nach Abschluss des Build-Prozesses wurde eine installierbare APK-Datei bereitges
 
 ---
 
-### Aufgabe 4b – Fertig paketierte App (APK)
+## Aufgabe 4b – Fertig paketierte App (APK)
 
 Das Resultat ist eine vollständig paketierte **Android-APK**, welche zur Installation auf einem Android-Gerät geeignet ist.
 
@@ -241,9 +241,9 @@ Aufgabe **4a** und **4b** wurden erfüllt.
 
 ---
 
-## Aufgabe 5: Mobile App gemäss Testplan überprüfen
+# Aufgabe 5: Mobile App gemäss Testplan überprüfen
 
-### a) Funktionale Tests
+## a) Funktionale Tests
 
 Die Mobile App wurde anhand eines definierten manuellen Testplans überprüft.  
 Alle zentralen Funktionen (Authentifizierung, Stories List, Add Story, Edit Story, Delete Story, Navigation) wurden manuell getestet.
@@ -255,7 +255,7 @@ Eine detaillierte Dokumentation der Testfälle, Schritte, erwarteten Ergebnisse 
 
 ➡ **testing.md**
 
-### b) Testergebnisse
+## b) Testergebnisse
 
 - Alle definierten Testfälle wurden erfolgreich durchgeführt.
 - Funktionale Anforderungen sind erfüllt.
