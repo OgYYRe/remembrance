@@ -55,6 +55,23 @@ export default function StoriesList() {
                 keyExtractor={(item) => item.id}
                 contentContainerStyle={{ padding: 12, paddingTop: 8 }}
                 columnWrapperStyle={{ gap: 12 }}
+                ListEmptyComponent={() => (
+                    <View
+                        style={{
+                            flex: 1,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            marginTop: 80,
+                        }}
+                    >
+                        <Text style={{ fontSize: 18, fontWeight: "600", marginBottom: 6 }}>
+                            You have no stories yet
+                        </Text>
+                        <Text style={{ fontSize: 14, color: "#666", textAlign: "center" }}>
+                            Tap + to create one.
+                        </Text>
+                    </View>
+                )}
                 renderItem={({ item, index }) => {
                     const isLastOdd = stories.length % 2 === 1 && index === stories.length - 1;
 
