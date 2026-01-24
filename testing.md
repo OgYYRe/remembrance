@@ -1,10 +1,12 @@
 # Manuelle Tests
 
-## 0. Bekannte Probleme (noch nicht gelöst)
+## 0. Bekannte Probleme (Gelöst)
 
-✔ Keyboard überdeckt Textfelder auf Add Story Screen
-✔ Cancel und Save Buttons sind nicht sichtbar, wenn viele optionale Felder aktiv sind
-✔ Allgemeine Styling Verbesserungen nötig
+- ✔ Keyboard überdeckt Textfelder auf Add Story Screen
+- ✔ Cancel und Save Buttons sind nicht sichtbar, wenn viele optionale Felder aktiv sind
+- ✔ Allgemeine Styling Verbesserungen nötig
+- ⚠ Android: System-Navigationsleiste kann Buttons unten überlagern (auf echtem Android-Gerät sichtbar, in Expo Go nicht aufgefallen)
+
 
 ---
 
@@ -44,7 +46,7 @@
 2. Logout Button drücken  
    **Erwartet:** App geht zurück zum Login Screen.  
    **Result:** PASS  
-   **Notiz:** ✔ Noch nicht implementiert.
+   **Notiz:** ✔ Noch nicht implementiert.(implementiert)
 
 ---
 
@@ -60,7 +62,7 @@
 
 ---
 
-## 5. Home Button (im Layout,um einfacher zu testen , Nachher wird es entfernt)
+## 5. Home Button (im Layout,um einfacher zu testen , Nachher wird es entfernt ✔)
 
 **Test:** Home Button Navigation  
 **Schritte:**
@@ -68,7 +70,7 @@
 2. Home Button drücken  
    **Erwartet:** Navigation zu Stories List.  
    **Result:** PASS   
-   **Notiz:** ✔ Button ist nur für Test, wird später entfernt.
+   **Notiz:** ✔ Button ist nur für Test, wird später entfernt. (implementiert)
 
 ---
 
@@ -156,3 +158,24 @@
    **Erwartet:** Änderungen werden gespeichert und angezeigt.  
    **Result:** PASS  
    **Notiz:** ✔ Keyboard steht über dem Story-input
+
+---
+
+## 11. Android Test (Praxistest)
+
+**Test:** Installation und Bedienung auf echtem Android-Gerät  
+**Schritte:**
+1. APK (EAS Build) installieren
+2. App starten, Login, Kernfunktionen testen
+
+**Erwartet:** App startet und ist bedienbar, Kernfunktionen funktionieren.  
+**Result:** PASS  
+**Notiz:** Hinweis: Android System-Navigationsleiste kann Buttons unten überlagern.
+
+---
+
+# Unit Tests (Jest)
+
+- Nickname Validation Tests: PASS
+- Passwort Validation Tests: PASS
+- Jest-expo Setup: PASS (npm test läuft)
