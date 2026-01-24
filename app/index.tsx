@@ -14,8 +14,8 @@ import { validatePassword } from "../lib/password";
 import {router} from "expo-router";
 
 export default function Login() {
-    const [nickname, setNickname] = useState("ogyyre");
-    const [password, setPassword] = useState("Ab12345.");
+    const [nickname, setNickname] = useState("");
+    const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
 
     async function signUp(){
