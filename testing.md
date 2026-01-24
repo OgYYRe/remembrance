@@ -4,7 +4,7 @@
 
 ✔ Keyboard überdeckt Textfelder auf Add Story Screen
 ✔ Cancel und Save Buttons sind nicht sichtbar, wenn viele optionale Felder aktiv sind
-- Allgemeine Styling Verbesserungen nötig
+✔ Allgemeine Styling Verbesserungen nötig
 
 ---
 
@@ -43,8 +43,8 @@
 1. Eingeloggt sein
 2. Logout Button drücken  
    **Erwartet:** App geht zurück zum Login Screen.  
-   **Result:** PASS / FAIL  
-   **Notiz:** Noch nicht implementiert.
+   **Result:** PASS  
+   **Notiz:** ✔ Noch nicht implementiert.
 
 ---
 
@@ -68,7 +68,7 @@
 2. Home Button drücken  
    **Erwartet:** Navigation zu Stories List.  
    **Result:** PASS   
-   **Notiz:** Button ist nur für Test, wird später entfernt.
+   **Notiz:** ✔ Button ist nur für Test, wird später entfernt.
 
 ---
 

@@ -25,9 +25,9 @@ export default function Login() {
             const email = nicknameToEmail(nickname);
             const {error} = await supabase.auth.signUp({email, password});
             if(error) throw error;
-            Alert.alert("OK", "Account created! Jetzt bitte einloggen.");
+            Alert.alert("OK", "Account created! Please sign in.");
         } catch (e: any) {
-            Alert.alert("Fehler", e?.message ?? "Unbekannter Fehler");
+            Alert.alert("Error", e?.message ?? "Unknown error");
         } finally {
             setLoading(false);
         }
@@ -43,10 +43,10 @@ export default function Login() {
             });
 
             if (error) throw error;
-            router.replace("/home");
+            router.replace("/stories");
 
         } catch (e: any) {
-            Alert.alert("Fehler", e?.message ?? "Unbekannter Fehler");
+            Alert.alert("Error", e?.message ?? "Unknown error");
         } finally {
             setLoading(false);
         }

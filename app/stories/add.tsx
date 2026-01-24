@@ -315,7 +315,7 @@ export default function AddStoryScreen() {
 
                     <Pressable
                         style={[styles.btn, styles.btnHome]}
-                        onPress={() => router.replace("/home")}
+                        onPress={() => router.replace("/stories")}
                         disabled={loading}
                     >
                         <Text style={styles.btnHomeText}>Home</Text>
