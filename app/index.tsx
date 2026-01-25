@@ -6,7 +6,7 @@ import {
     Text,
     TextInput,
     TouchableWithoutFeedback,
-    View, StyleSheet, Image
+    View, StyleSheet, Image, KeyboardAvoidingView, Platform
 } from "react-native";
 import { supabase } from "../lib/supabase";
 import { nicknameToEmail } from "../lib/auth";
@@ -56,92 +56,96 @@ export default function Login() {
 
 
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-
-            <View style={styles.screen}>
-                <View style={styles.card}>
-                    <Image source={ require("../assets/logo.png")} style={{width: 80, height: 80, alignSelf: "center", marginBottom: 8}} />
-                    <Text
-                        style={{
-                            fontSize: 18,
-                            fontWeight: "500",
-                            textAlign: "center",
-                            color: "#555",
-                            marginBottom: 2,
-                        }}
-                    >
-                        Welcome 👋
-                    </Text>
-
-                    <Text
-                        style={{
-                            fontSize: 14,
-                            textAlign: "center",
-                            color: "#777",
-                            marginBottom: 8,
-                        }}
-                    >
-                        Create, save and revisit your personal stories
-                    </Text>
-                    <Text style={styles.title}>Login</Text>
-
-                    <View style={styles.field}>
-                        <Text style={styles.label}>Nickname</Text>
-                        <TextInput
-                            value={nickname}
-                            onChangeText={setNickname}
-                            placeholder="Nickname"
-                            placeholderTextColor="#888"
-                            autoCapitalize="none"
-                            autoCorrect={false}
-                            style={styles.input}
-                            editable={!loading}
-                            returnKeyType="next"
-                        />
-                    </View>
-
-                    <View style={styles.field}>
-                        <Text style={styles.label}>Password</Text>
-                        <TextInput
-                            value={password}
-                            onChangeText={setPassword}
-                            placeholder="Password"
-                            placeholderTextColor="#888"
-                            secureTextEntry
-                            style={styles.input}
-                            editable={!loading}
-                            returnKeyType="done"
-                        />
-                    </View>
-
-                    <View style={styles.btnRow}>
-                        <Pressable
-                            style={({ pressed }) => [
-                                styles.btn,
-                                styles.btnSecondary,
-                                pressed && styles.pressed,
-                                loading && styles.btnDisabled,
-                            ]}
-                            onPress={signUp}
-                            disabled={loading}
+            <KeyboardAvoidingView
+                style={{ flex: 1 }}
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+            >
+                <View style={styles.screen}>
+                    <View style={styles.card}>
+                        <Image source={ require("../assets/logo.png")} style={{width: 80, height: 80, alignSelf: "center", marginBottom: 8}} />
+                        <Text
+                            style={{
+                                fontSize: 18,
+                                fontWeight: "500",
+                                textAlign: "center",
+                                color: "#555",
+                                marginBottom: 2,
+                            }}
                         >
-                            {loading ? <ActivityIndicator /> : <Text style={styles.btnSecondaryText}>Sign up</Text>}
-                        </Pressable>
+                            Welcome 👋
+                        </Text>
 
-                        <Pressable
-                            style={({ pressed }) => [
-                                styles.btn,
-                                styles.btnPrimary,
-                                pressed && styles.pressed,
-                                loading && styles.btnDisabled,
-                            ]}
-                            onPress={signIn}
-                            disabled={loading}
+                        <Text
+                            style={{
+                                fontSize: 14,
+                                textAlign: "center",
+                                color: "#777",
+                                marginBottom: 8,
+                            }}
                         >
-                            {loading ? <ActivityIndicator /> : <Text style={styles.btnPrimaryText}>Sign in</Text>}
-                        </Pressable>
+                            Create, save and revisit your personal stories
+                        </Text>
+                        <Text style={styles.title}>Login</Text>
+
+                        <View style={styles.field}>
+                            <Text style={styles.label}>Nickname</Text>
+                            <TextInput
+                                value={nickname}
+                                onChangeText={setNickname}
+                                placeholder="Nickname"
+                                placeholderTextColor="#888"
+                                autoCapitalize="none"
+                                autoCorrect={false}
+                                style={styles.input}
+                                editable={!loading}
+                                returnKeyType="next"
+                            />
+                        </View>
+
+                        <View style={styles.field}>
+                            <Text style={styles.label}>Password</Text>
+                            <TextInput
+                                value={password}
+                                onChangeText={setPassword}
+                                placeholder="Password"
+                                placeholderTextColor="#888"
+                                secureTextEntry
+                                style={styles.input}
+                                editable={!loading}
+                                returnKeyType="done"
+                            />
+                        </View>
+
+                        <View style={styles.btnRow}>
+                            <Pressable
+                                style={({ pressed }) => [
+                                    styles.btn,
+                                    styles.btnSecondary,
+                                    pressed && styles.pressed,
+                                    loading && styles.btnDisabled,
+                                ]}
+                                onPress={signUp}
+                                disabled={loading}
+                            >
+                                {loading ? <ActivityIndicator /> : <Text style={styles.btnSecondaryText}>Sign up</Text>}
+                            </Pressable>
+
+                            <Pressable
+                                style={({ pressed }) => [
+                                    styles.btn,
+                                    styles.btnPrimary,
+                                    pressed && styles.pressed,
+                                    loading && styles.btnDisabled,
+                                ]}
+                                onPress={signIn}
+                                disabled={loading}
+                            >
+                                {loading ? <ActivityIndicator /> : <Text style={styles.btnPrimaryText}>Sign in</Text>}
+                            </Pressable>
+                        </View>
                     </View>
                 </View>
-            </View>
+            </KeyboardAvoidingView>
         </TouchableWithoutFeedback>
     );
 }
