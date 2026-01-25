@@ -349,7 +349,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     textArea: { minHeight: 140 },
-    row: { flexDirection: "row", gap: 12, marginTop: 18 },
+    row: { flexDirection: "row", gap: 12, marginTop: 20,marginBottom: 20 },
     btn: {
         flex: 1,
         borderRadius: 12,
