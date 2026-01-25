@@ -1,11 +1,11 @@
 # Manuelle Tests
 
-## 0. Bekannte Probleme (Gelöst)
+## 0. Bekannte Probleme (Alles Gelöst)
 
 - ✔ Keyboard überdeckt Textfelder auf Add Story Screen
 - ✔ Cancel und Save Buttons sind nicht sichtbar, wenn viele optionale Felder aktiv sind
 - ✔ Allgemeine Styling Verbesserungen nötig
-- ⚠ Android: System-Navigationsleiste kann Buttons unten überlagern (auf echtem Android-Gerät sichtbar, in Expo Go nicht aufgefallen)
+- ✔ Android: System-Navigationsleiste kann Buttons unten überlagern (auf echtem Android-Gerät sichtbar, in Expo Go nicht aufgefallen)
 
 
 ---
@@ -120,7 +120,7 @@
 3. Gleich für Size und Location  
    **Erwartet:** Felder erscheinen und verschwinden korrekt.  
    **Result:** PASS   
-   **Notiz:** ✔ Layout Probleme mit Keyboard beachten.
+   **Notiz:** ✔ Layout Probleme mit Keyboard beachten. (implementiert)
 
 ---
 
@@ -157,7 +157,7 @@
 4. Save drücken  
    **Erwartet:** Änderungen werden gespeichert und angezeigt.  
    **Result:** PASS  
-   **Notiz:** ✔ Keyboard steht über dem Story-input
+   **Notiz:** ✔ Keyboard steht über dem Story-input. (implementiert)
 
 ---
 
@@ -170,7 +170,7 @@
 
 **Erwartet:** App startet und ist bedienbar, Kernfunktionen funktionieren.  
 **Result:** PASS  
-**Notiz:** Hinweis: Android System-Navigationsleiste kann Buttons unten überlagern.
+**Notiz:** ✔ Android System-Navigationsleiste kann Buttons unten überlagern. (implementiert)
 
 ---
 
