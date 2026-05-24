@@ -3,9 +3,6 @@ import { router } from "expo-router";
 import {useEffect, useState} from "react";
 import { supabase } from "../../lib/supabase";
 
-
-
-
 export default function StoriesList() {
     const [stories, setStories] = useState<any[]>([]);
     useEffect(() => {
