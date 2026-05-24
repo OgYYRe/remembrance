@@ -107,6 +107,8 @@ Android builds were generated using Expo Application Services (EAS).
 
 Build link:  
 https://expo.dev/accounts/ogyyre/projects/remembrance/builds/da1fe802-db20-431f-b79f-699435fd296e
+If it has expired:
+https://drive.google.com/file/d/1EMYWZ5BTeO_JihiPTlMo92AMIpVm3Z9K/view?usp=sharing
 
 ---
 
