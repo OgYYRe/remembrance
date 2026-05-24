@@ -265,4 +265,6 @@ Eine detaillierte Dokumentation der Testfälle, Schritte, erwarteten Ergebnisse 
 **Ergebnis:**  
 Die App entspricht dem Testplan und ist funktional korrekt.
 
+# Build Link: https://expo.dev/accounts/ogyyre/projects/remembrance/builds/da1fe802-db20-431f-b79f-699435fd296e
+
 
